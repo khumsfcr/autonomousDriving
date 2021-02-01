@@ -7,5 +7,5 @@ int main(){
 	int a;
 	printf("Aa");
 	printf("AAAAA");
-	printf("AAaA");
+	printf("aA");
 	return 0;}
