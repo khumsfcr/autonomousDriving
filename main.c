@@ -60,13 +60,13 @@ void BACKWARD(int* speed_level){
 
 void ROTATE_R(){
 
-		softPwmWrite(dcmotor_FR_1,200);
+		softPwmWrite(dcmotor_FR_1,100); //Value is Flexible
 		softPwmWrite(dcmotor_FR_2,0);
 		softPwmWrite(dcmotor_BR_1,0);
-		softPwmWrite(dcmotor_BR_2,200);
+		softPwmWrite(dcmotor_BR_2,100);
 		softPwmWrite(dcmotor_FL_1,0);
-		softPwmWrite(dcmotor_FL_2,200);
-		softPwmWrite(dcmotor_BL_1,200);
+		softPwmWrite(dcmotor_FL_2,100);
+		softPwmWrite(dcmotor_BL_1,100);
 		softPwmWrite(dcmotor_BL_2,0);
 
 	return;
@@ -75,13 +75,13 @@ void ROTATE_R(){
 void ROTATE_L(){
 
 		softPwmWrite(dcmotor_FR_1,0);
-		softPwmWrite(dcmotor_FR_2,200);
-		softPwmWrite(dcmotor_BR_1,200);
+		softPwmWrite(dcmotor_FR_2,100);
+		softPwmWrite(dcmotor_BR_1,100);
 		softPwmWrite(dcmotor_BR_2,0);
-		softPwmWrite(dcmotor_FL_1,200);
+		softPwmWrite(dcmotor_FL_1,100);
 		softPwmWrite(dcmotor_FL_2,0);
 		softPwmWrite(dcmotor_BL_1,0);
-		softPwmWrite(dcmotor_BL_2,200);
+		softPwmWrite(dcmotor_BL_2,100);
 
 	return;
 }
