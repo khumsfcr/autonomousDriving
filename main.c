@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <stdio.h> //khumsfcr
 #include <stdlib.h>
 #include <wiringPi.h>
 #include <softPwm.h>
@@ -27,18 +27,18 @@ int ultrasonic_F_echo = 29;
 
 float start_time_R, start_time_L, start_time_F, end_time_R, end_time_L, end_time_F, distance_R, distance_L, distance_F;
 
-int* speed_level; //Velocity level of rc czr (0 : STOP, 4 : Maximum Velocity)
+int* speed_level; //Velocity level of rc czr (0 : STOP, 8 : Maximum Velocity)
 char message;
 
 void FORWARD(int* speed_level){
 	
 		softPwmWrite(dcmotor_FR_1,0);
-		softPwmWrite(dcmotor_FR_2,50*speed_level[0]);
-		softPwmWrite(dcmotor_BR_1,50*speed_level[0]);
+		softPwmWrite(dcmotor_FR_2,25*speed_level[0]);
+		softPwmWrite(dcmotor_BR_1,25*speed_level[0]);
 		softPwmWrite(dcmotor_BR_2,0);
 		softPwmWrite(dcmotor_FL_1,0);
-		softPwmWrite(dcmotor_FL_2,50*speed_level[0]);
-		softPwmWrite(dcmotor_BL_1,50*speed_level[0]);
+		softPwmWrite(dcmotor_FL_2,25*speed_level[0]);
+		softPwmWrite(dcmotor_BL_1,25*speed_level[0]);
 		softPwmWrite(dcmotor_BL_2,0);
 
 	return;
@@ -46,27 +46,27 @@ void FORWARD(int* speed_level){
 
 void BACKWARD(int* speed_level){
 	
-		softPwmWrite(dcmotor_FR_1,50*speed_level[0]);
+		softPwmWrite(dcmotor_FR_1,25*speed_level[0]);
 		softPwmWrite(dcmotor_FR_2,0);
 		softPwmWrite(dcmotor_BR_1,0);
-		softPwmWrite(dcmotor_BR_2,50*speed_level[0]);
-		softPwmWrite(dcmotor_FL_1,50*speed_level[0]);
+		softPwmWrite(dcmotor_BR_2,25*speed_level[0]);
+		softPwmWrite(dcmotor_FL_1,25*speed_level[0]);
 		softPwmWrite(dcmotor_FL_2,0);
 		softPwmWrite(dcmotor_BL_1,0);
-		softPwmWrite(dcmotor_BL_2,50*speed_level[0]);
+		softPwmWrite(dcmotor_BL_2,25*speed_level[0]);
 	
 	return;
 }
 
 void ROTATE_R(){
 
-		softPwmWrite(dcmotor_FR_1,100); //Value is Flexible
+		softPwmWrite(dcmotor_FR_1,200); //Value is Flexible
 		softPwmWrite(dcmotor_FR_2,0);
 		softPwmWrite(dcmotor_BR_1,0);
-		softPwmWrite(dcmotor_BR_2,100);
+		softPwmWrite(dcmotor_BR_2,200);
 		softPwmWrite(dcmotor_FL_1,0);
-		softPwmWrite(dcmotor_FL_2,100);
-		softPwmWrite(dcmotor_BL_1,100);
+		softPwmWrite(dcmotor_FL_2,200);
+		softPwmWrite(dcmotor_BL_1,200);
 		softPwmWrite(dcmotor_BL_2,0);
 
 	return;
@@ -75,13 +75,13 @@ void ROTATE_R(){
 void ROTATE_L(){
 
 		softPwmWrite(dcmotor_FR_1,0);
-		softPwmWrite(dcmotor_FR_2,100);
-		softPwmWrite(dcmotor_BR_1,100);
+		softPwmWrite(dcmotor_FR_2,200);
+		softPwmWrite(dcmotor_BR_1,200);
 		softPwmWrite(dcmotor_BR_2,0);
-		softPwmWrite(dcmotor_FL_1,100);
+		softPwmWrite(dcmotor_FL_1,200);
 		softPwmWrite(dcmotor_FL_2,0);
 		softPwmWrite(dcmotor_BL_1,0);
-		softPwmWrite(dcmotor_BL_2,100);
+		softPwmWrite(dcmotor_BL_2,200);
 
 	return;
 }
@@ -242,7 +242,7 @@ int main(){
 	softPwmCreate(dcmotor_BL_2,0,200);
 
 	speed_level = (int*)malloc(sizeof(int)*2);
-	speed_level[0] = 2;
+	speed_level[0] = 5;
 	
 	while(1){
 		
@@ -293,7 +293,7 @@ int main(){
 				ULTRASONIC_L();
 				ULTRASONIC_F();
 
-				if(distance_L < 15){
+				if(distance_L < 10){
 					STOP();
 					RED();
 					delay(1000);
@@ -305,7 +305,7 @@ int main(){
 					float q = distance_L + 11.2; //Length of rc car = 22.4
 					float cos_alpha = p / sqrt(pow(p,2)+pow(q,2));
 			
-					while(fabs(distance_L -(q * cos_alpha - 11.2)) > 0.5){
+					while(fabs(distance_L -(q * cos_alpha - 11.2)) > 0.7){
 						ROTATE_R();
 						BLUE();
 						ULTRASONIC_L();
@@ -327,7 +327,7 @@ int main(){
 					delay(500);
 				}
 		
-				if(distance_R < 15){
+				if(distance_R < 10){
 			
 					STOP();
 					RED();
@@ -340,7 +340,7 @@ int main(){
 					float q = distance_R + 11.2;
 					float cos_alpha = p / sqrt(pow(p,2)+pow(q,2));
 			
-					while(fabs(distance_R - (q * cos_alpha - 11.2)) > 0.5){
+					while(fabs(distance_R - (q * cos_alpha - 11.2)) > 0.7){
 						ROTATE_L();
 						BLUE();
 						ULTRASONIC_R();
@@ -375,6 +375,9 @@ int main(){
 						BLUE();
 						ULTRASONIC_L();
 					}
+					STOP();
+					RED();
+					delay(1000);
 				}
 				
 				if(distance_F < 20 && distance_L > distance_R){
@@ -389,6 +392,9 @@ int main(){
 						BLUE();
 						ULTRASONIC_R();
 					}
+					STOP();
+					RED();
+					delay(1000);
 				}
 			}
 		}	
